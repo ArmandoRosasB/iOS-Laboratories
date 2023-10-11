@@ -13,14 +13,33 @@ struct ContentView: View {
     var body: some View {
         List(pokemon_list) { PokemonBase in
             HStack {
-                WebImage(url: URL(string: PokemonBase.perfil.sprites.front_default))
+                WebImage(url: URL(string: PokemonBase.perfil?.sprites.front_default ?? ""))
                     .resizable()
                     .scaledToFit()
                     .frame(width: 48, height: 48, alignment: .center)
                 Text(PokemonBase.pokemon.name)
             }
+        }.onAppear {
+            Task{
+                await get_pokemon_list()
+            }
+            
         }
+        
     }
+        func get_pokemon_list() async {
+            let pokemon_repository: PokemonRepository = PokemonRepository()
+            let result = await pokemon_repository.get_pokemon_list(limit: 50)
+            
+            var temp_pokemon_list = [PokemonBase]()
+            for i in 0...result!.results.count - 1 {
+                let perfil_pokemon = await pokemon_repository.get_pokemon_info(number_pokemon: i + 1)
+                let temp_pokemon = PokemonBase(id: i, pokemon: result!.results[i], perfil: perfil_pokemon)
+                temp_pokemon_list.append(temp_pokemon)
+            }
+            
+            pokemon_list = temp_pokemon_list
+        }
 }
 
 struct ContentView_Previews: PreviewProvider {
