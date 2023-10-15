@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 class NetWorkAPIService {
-    static let shared: NetWorkAPIService = NetWorkAPIService()
+    static let shared = NetWorkAPIService()
     
     func getPokedex(url: URL, limit:Int)async -> Pokedex? {
         let parameters : Parameters = [ // Establecemos los parametros para el request
