@@ -14,7 +14,7 @@ struct PokedexApp: App { // App es un protocolo por lo que PokedexApp debe ser
     
     var body: some Scene { // body regresa el contenido de la app como una escena
         WindowGroup { //Un tipo de escena utilizada
-            ContentView()
+            CoordinatorView()
         }.onChange(of: scenePhase) { (newScenePhase) in
             switch newScenePhase {
             case .background:

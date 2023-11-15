@@ -12,13 +12,20 @@ struct ContentView: View {
     @StateObject var content_view_model = ContentViewModel()
     
     var body: some View {
-        List(content_view_model.pokemon_list) { PokemonBase in
-            HStack {
-                WebImage(url: URL(string: PokemonBase.perfil?.sprites.front_default ?? ""))
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 48, height: 48, alignment: .center)
-                Text(PokemonBase.pokemon.name)
+        NavigationView {
+            List(content_view_model.pokemon_list) { pokemonBase in
+                NavigationLink {
+                    PokemonDetailView(pokemonBase: pokemonBase)
+                    
+                } label: {
+                    HStack {
+                        WebImage(url: URL(string: pokemonBase.perfil?.sprites.front_default ?? ""))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 48, height: 48, alignment: .center)
+                        Text(pokemonBase.pokemon.name)
+                    }
+                }
             }
         }.onAppear {
             Task{
@@ -30,3 +37,9 @@ struct ContentView: View {
     }
 }
 
+
+struct Previews_ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+    }
+}
